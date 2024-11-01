@@ -26,17 +26,21 @@ class OrderService {
       // collapse products by id
       const collapsedProducts = collapseProducts(products);
 
-      collapsedProducts.forEach((product) => {
-        //const price = await this.productRepository.getById(product.productId);
-        const price = 10;
-        if (price) {
+      for (const product of collapsedProducts) {
+        const item = await this.productRepository.getById(product.productId);
+
+        if (item) {
+          const { price } = item;
           totalPrice += price * product.quantity;
           product.price = price;
         } else {
-          throw new Error(`Price for productId ${item.productId} not found`);
+          throw new Error(
+            `Product with productId ${product.productId} not found`
+          );
         }
-      });
+      }
 
+      totalPrice = totalPrice.toFixed(2)
       const orderData = { userId: userId, totalPrice: totalPrice };
 
       const orderId = await this.orderRepository.create(orderData);
@@ -96,8 +100,9 @@ class OrderService {
         );
         // If product exists, update it
         if (existingOrderDetail) {
-          //const price = await this.productRepository.getById(product.productId);
-          const price = 10;
+          const { price } = await this.productRepository.getById(
+            product.productId
+          );
           if (price) {
             product.price = price;
             totalPrice += price * product.quantity;
