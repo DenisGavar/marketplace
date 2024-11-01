@@ -5,7 +5,7 @@
 exports.up = function (knex) {
   return knex.schema.createTable("vendors", (table) => {
     table.increments("id").primary();
-    table.string("name").notNullable();
+    table.string("name").notNullable().unique();
     table.string("email").notNullable().unique();
     table.float("rating").defaultTo(0);
     

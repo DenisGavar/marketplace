@@ -4,10 +4,11 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const helmet = require("helmet");
 
+const vendorRoutes = require("./src/routes/vendor");
 const categoryRoutes = require("./src/routes/category");
 const orderRoutes = require("./src/routes/order");
 const userRoutes = require("./src/routes/user");
-const authenticate = require("./src/middlewares/auth")
+const authenticate = require("./src/middlewares/auth");
 
 const logger = require("./src/utils/logger");
 
@@ -24,6 +25,7 @@ app.use("/api/v1", userRoutes);
 app.use(authenticate);
 
 // Routes to access the information
+app.use("/api/v1/vendors", vendorRoutes);
 app.use("/api/v1/categories", categoryRoutes);
 app.use("/api/v1/orders", orderRoutes);
 
@@ -31,3 +33,14 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   logger.info("Listening", { port: port });
 });
+
+// TODO:
+// add CRUD vendors
+// add CRUD products
+// add deploy
+// add tests (user, vendor, product, order)
+// add github workflow (tests, deploy)
+// add frontend part
+// add data validation
+// rewrite documentation (technologies, contracts)
+// add not full update (you don't need to pass all parameters, but only the updated ones)
