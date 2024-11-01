@@ -4,6 +4,10 @@ const logger = require("../utils/logger");
 
 const Transactor = require("../utils/transactor");
 
+const UserRepository = require("../repositories/user");
+const UserService = require("../services/user");
+const UserController = require("../controllers/user");
+
 const CategoryRepository = require("../repositories/category");
 const CategoryService = require("../services/category");
 const CategoryController = require("../controllers/category");
@@ -20,6 +24,10 @@ const container = async () => {
   const db = await connectDB();
 
   const transactor = new Transactor(db);
+
+  const userRepository = new UserRepository(logger, db);
+  const userService = new UserService(logger, userRepository);
+  const userController = new UserController(logger, userService);
 
   const categoryRepository = new CategoryRepository(logger, db);
   const categoryService = new CategoryService(logger, categoryRepository);
@@ -40,6 +48,7 @@ const container = async () => {
   const orderController = new OrderController(logger, orderService);
 
   const container = {
+    userController: userController,
     categoryController: categoryController,
     orderController: orderController,
   };
