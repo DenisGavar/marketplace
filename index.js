@@ -40,7 +40,7 @@ app.listen(port, () => {
 // add product_categories CRUD (maybe add to the product create/get/update)
 // add deploy
 // add tests (user, vendor, product, order)
-// add github workflow (tests, deploy)
+// add github workflow (deploy)
 // add frontend part
 // add data validation
 // rewrite documentation (technologies, contracts)
