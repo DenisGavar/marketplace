@@ -8,6 +8,10 @@ const UserRepository = require("../repositories/user");
 const UserService = require("../services/user");
 const UserController = require("../controllers/user");
 
+const VendorRepository = require("../repositories/vendor");
+const VendorService = require("../services/vendor");
+const VendorController = require("../controllers/vendor");
+
 const CategoryRepository = require("../repositories/category");
 const CategoryService = require("../services/category");
 const CategoryController = require("../controllers/category");
@@ -29,6 +33,10 @@ const container = async () => {
   const userService = new UserService(logger, userRepository);
   const userController = new UserController(logger, userService);
 
+  const vendorRepository = new VendorRepository(logger, db);
+  const vendorService = new VendorService(logger, vendorRepository);
+  const vendorController = new VendorController(logger, vendorService);
+
   const categoryRepository = new CategoryRepository(logger, db);
   const categoryService = new CategoryService(logger, categoryRepository);
   const categoryController = new CategoryController(logger, categoryService);
@@ -49,6 +57,7 @@ const container = async () => {
 
   const container = {
     userController: userController,
+    vendorController: vendorController,
     categoryController: categoryController,
     orderController: orderController,
   };

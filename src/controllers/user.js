@@ -5,12 +5,6 @@ class UserController {
 
     this.create = this.create.bind(this);
     this.signIn = this.signIn.bind(this);
-    /*
-      this.getAll = this.getAll.bind(this);
-      this.getById = this.getById.bind(this);
-      this.update = this.update.bind(this);
-      this.delete = this.delete.bind(this);
-      */
   }
 
   // Create user
@@ -34,6 +28,7 @@ class UserController {
     }
   }
 
+  // Sign in user
   async signIn(req, res) {
     try {
       const op = "controllers.user.signIn";
