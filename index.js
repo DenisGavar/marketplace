@@ -4,11 +4,12 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const helmet = require("helmet");
 
-const vendorRoutes = require("./src/routes/vendor");
-const categoryRoutes = require("./src/routes/category");
-const orderRoutes = require("./src/routes/order");
 const userRoutes = require("./src/routes/user");
 const authenticate = require("./src/middlewares/auth");
+const vendorRoutes = require("./src/routes/vendor");
+const productRoutes = require("./src/routes/product");
+const categoryRoutes = require("./src/routes/category");
+const orderRoutes = require("./src/routes/order");
 
 const logger = require("./src/utils/logger");
 
@@ -26,6 +27,7 @@ app.use(authenticate);
 
 // Routes to access the information
 app.use("/api/v1/vendors", vendorRoutes);
+app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/categories", categoryRoutes);
 app.use("/api/v1/orders", orderRoutes);
 
@@ -35,8 +37,7 @@ app.listen(port, () => {
 });
 
 // TODO:
-// add CRUD vendors
-// add CRUD products
+// add product_categories CRUD (maybe add to the product create/get/update)
 // add deploy
 // add tests (user, vendor, product, order)
 // add github workflow (tests, deploy)
