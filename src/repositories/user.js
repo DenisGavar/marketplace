@@ -37,6 +37,22 @@ class UserRepository {
       });
     });
   }
+
+  async getById(id) {
+    const op = "repositories.user.getById";
+    const message = { op: op, id: id };
+    this.logger.info("", message);
+
+    return new Promise((resolve, reject) => {
+      const query = `SELECT * FROM users WHERE id = ?`;
+      this.db.get(query, [id], function (err, row) {
+        if (err) {
+          return reject(err);
+        }
+        resolve(row);
+      });
+    });
+  }
 }
 
 module.exports = UserRepository;

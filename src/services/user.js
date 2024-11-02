@@ -38,6 +38,15 @@ class UserService {
 
     return { name, token };
   }
+
+  async getById(id) {
+    const op = "services.user.getById";
+    const message = { op: op, id: id };
+    this.logger.info("", message);
+
+    const user = await this.userRepository.getById(id);
+    return user;
+  }
 }
 
 module.exports = UserService;
