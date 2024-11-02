@@ -19,19 +19,24 @@ class CategoryController {
       const message = { op: op, name: name };
       this.logger.info("", message);
 
-      if (name && name != "") {
-        const data = { name: name };
-        const category = await this.categoryService.create(data);
-        res.status(201).json({
-          status: "success",
-          data: category,
-        });
-      } else {
-        res.status(400).json({
+      let errMessage = "";
+      if (!name || name === "") {
+        errMessage += "The 'name' field is required and cannot be empty.\n";
+      }
+
+      if (errMessage != "") {
+        return res.status(400).json({
           status: "fail",
-          message: "The 'name' field is required and cannot be empty.",
+          message: errMessage,
         });
       }
+
+      const data = { name: name };
+      const category = await this.categoryService.create(data);
+      res.status(201).json({
+        status: "success",
+        data: category,
+      });
     } catch (err) {
       this.logger.error(err);
       res.status(400).json({
@@ -101,25 +106,30 @@ class CategoryController {
       const message = { op: op, id: id, name: name };
       this.logger.info("", message);
 
-      if (name && name != "") {
-        const data = { name: name };
-        const category = await this.categoryService.update(id, data);
-        if (!category) {
-          return res.status(404).json({
-            status: "fail",
-            message: "Category not found",
-          });
-        }
-        res.status(200).json({
-          status: "success",
-          data: category,
-        });
-      } else {
-        res.status(400).json({
+      let errMessage = "";
+      if (!name || name === "") {
+        errMessage += "The 'name' field is required and cannot be empty.\n";
+      }
+
+      if (errMessage != "") {
+        return res.status(400).json({
           status: "fail",
-          message: "The 'name' field is required and cannot be empty.",
+          message: errMessage,
         });
       }
+
+      const data = { name: name };
+      const category = await this.categoryService.update(id, data);
+      if (!category) {
+        return res.status(404).json({
+          status: "fail",
+          message: "Category not found",
+        });
+      }
+      res.status(200).json({
+        status: "success",
+        data: category,
+      });
     } catch (err) {
       this.logger.error(err);
       res.status(400).json({
@@ -132,7 +142,7 @@ class CategoryController {
   // Delete category
   async delete(req, res) {
     try {
-      const id = req.params.id
+      const id = req.params.id;
 
       const op = "controllers.category.delete";
       const message = { op: op, id: id };
