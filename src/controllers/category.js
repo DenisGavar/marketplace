@@ -13,15 +13,25 @@ class CategoryController {
   // Create category
   async create(req, res) {
     try {
+      const { name } = req.body;
+
       const op = "controllers.category.create";
-      const message = { op: op, name: req.body.name };
+      const message = { op: op, name: name };
       this.logger.info("", message);
 
-      const category = await this.categoryService.create(req.body);
-      res.status(201).json({
-        status: "success",
-        data: category,
-      });
+      if (name && name != "") {
+        const data = { name: name };
+        const category = await this.categoryService.create(data);
+        res.status(201).json({
+          status: "success",
+          data: category,
+        });
+      } else {
+        res.status(400).json({
+          status: "fail",
+          message: "The 'name' field is required and cannot be empty.",
+        });
+      }
     } catch (err) {
       this.logger.error(err);
       res.status(400).json({
@@ -55,11 +65,13 @@ class CategoryController {
   // Get category by ID
   async getById(req, res) {
     try {
+      const id = req.params.id;
+
       const op = "controllers.category.getById";
-      const message = { op: op, id: req.params.id };
+      const message = { op: op, id: id };
       this.logger.info("", message);
 
-      const category = await this.categoryService.getById(req.params.id);
+      const category = await this.categoryService.getById(id);
       if (!category) {
         return res.status(404).json({
           status: "fail",
@@ -82,24 +94,32 @@ class CategoryController {
   // Update category
   async update(req, res) {
     try {
+      const { name } = req.body;
+      const id = req.params.id;
+
       const op = "controllers.category.update";
-      const message = { op: op, id: req.params.id };
+      const message = { op: op, id: id, name: name };
       this.logger.info("", message);
 
-      const category = await this.categoryService.update(
-        req.params.id,
-        req.body
-      );
-      if (!category) {
-        return res.status(404).json({
+      if (name && name != "") {
+        const data = { name: name };
+        const category = await this.categoryService.update(id, data);
+        if (!category) {
+          return res.status(404).json({
+            status: "fail",
+            message: "Category not found",
+          });
+        }
+        res.status(200).json({
+          status: "success",
+          data: category,
+        });
+      } else {
+        res.status(400).json({
           status: "fail",
-          message: "Category not found",
+          message: "The 'name' field is required and cannot be empty.",
         });
       }
-      res.status(200).json({
-        status: "success",
-        data: category,
-      });
     } catch (err) {
       this.logger.error(err);
       res.status(400).json({
@@ -112,11 +132,13 @@ class CategoryController {
   // Delete category
   async delete(req, res) {
     try {
+      const id = req.params.id
+
       const op = "controllers.category.delete";
-      const message = { op: op, id: req.params.id };
+      const message = { op: op, id: id };
       this.logger.info("", message);
 
-      const category = await this.categoryService.delete(req.params.id);
+      const category = await this.categoryService.delete(id);
       if (!category) {
         return res.status(404).json({
           status: "fail",
