@@ -114,7 +114,7 @@ class VendorController {
       const id = req.params.id;
 
       const op = "controllers.vendor.update";
-      const message = { op: op, name: name, email: email, rating: rating };
+      const message = { op: op, id: id, name: name, email: email, rating: rating };
       this.logger.info("", message);
 
       let errMessage = "";

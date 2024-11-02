@@ -1,6 +1,7 @@
 class ProductController {
-  constructor(logger, productService) {
+  constructor(logger, productService, vendorService) {
     this.productService = productService;
+    this.vendorService = vendorService;
     this.logger = logger;
 
     this.create = this.create.bind(this);
@@ -13,11 +14,48 @@ class ProductController {
   // Create product
   async create(req, res) {
     try {
+      const { name, description, price, vendorId } = req.body;
+
       const op = "controllers.product.create";
-      const message = { op: op, name: req.body.name };
+      const message = { op: op, name: name, price: price, vendorId: vendorId };
       this.logger.info("", message);
 
-      const product = await this.productService.create(req.body);
+      let errMessage = "";
+      if (!name || name === "") {
+        errMessage += "The 'name' field is required and cannot be empty.\n";
+      }
+
+      if (!description) {
+        errMessage += "The 'description' field is required.\n";
+      }
+
+      if (!price || typeof price != "number") {
+        errMessage += "The 'price' field is required and must be a number.\n";
+      }
+
+      if (vendorId) {
+        const vendor = await this.vendorService.getById(vendorId);
+        if (!vendor) {
+          errMessage += `Vendor with id ${vendorId} not found.\n`;
+        }
+      } else {
+        errMessage += "The 'vendorId' field is required.\n";
+      }
+
+      if (errMessage != "") {
+        return res.status(400).json({
+          status: "fail",
+          message: errMessage,
+        });
+      }
+
+      const data = {
+        name: name,
+        description: description,
+        price: price,
+        vendorId: vendorId,
+      };
+      const product = await this.productService.create(data);
       res.status(201).json({
         status: "success",
         data: product,
@@ -55,11 +93,13 @@ class ProductController {
   // Get product by ID
   async getById(req, res) {
     try {
+      const id = req.params.id;
+
       const op = "controllers.product.getById";
-      const message = { op: op, id: req.params.id };
+      const message = { op: op, id: id };
       this.logger.info("", message);
 
-      const product = await this.productService.getById(req.params.id);
+      const product = await this.productService.getById(id);
       if (!product) {
         return res.status(404).json({
           status: "fail",
@@ -82,14 +122,55 @@ class ProductController {
   // Update product
   async update(req, res) {
     try {
+      const { name, description, price, vendorId } = req.body;
+      const id = req.params.id;
+
       const op = "controllers.product.update";
-      const message = { op: op, id: req.params.id };
+      const message = {
+        op: op,
+        id: id,
+        name: name,
+        price: price,
+        vendorId: vendorId,
+      };
       this.logger.info("", message);
 
-      const product = await this.productService.update(
-        req.params.id,
-        req.body
-      );
+      let errMessage = "";
+      if (!name || name === "") {
+        errMessage += "The 'name' field is required and cannot be empty.\n";
+      }
+
+      if (!description) {
+        errMessage += "The 'description' field is required.\n";
+      }
+
+      if (!price || typeof price != "number") {
+        errMessage += "The 'price' field is required and must be a number.\n";
+      }
+
+      if (vendorId) {
+        const vendor = await this.vendorService.getById(vendorId);
+        if (!vendor) {
+          errMessage += `Vendor with id ${vendorId} not found.\n`;
+        }
+      } else {
+        errMessage += "The 'vendorId' field is required.\n";
+      }
+
+      if (errMessage != "") {
+        return res.status(400).json({
+          status: "fail",
+          message: errMessage,
+        });
+      }
+
+      const data = {
+        name: name,
+        description: description,
+        price: price,
+        vendorId: vendorId,
+      };
+      const product = await this.productService.update(id, data);
       if (!product) {
         return res.status(404).json({
           status: "fail",
@@ -112,11 +193,13 @@ class ProductController {
   // Delete product
   async delete(req, res) {
     try {
+      const id = req.params.id;
+
       const op = "controllers.product.delete";
-      const message = { op: op, id: req.params.id };
+      const message = { op: op, id: id };
       this.logger.info("", message);
 
-      const product = await this.productService.delete(req.params.id);
+      const product = await this.productService.delete(id);
       if (!product) {
         return res.status(404).json({
           status: "fail",
