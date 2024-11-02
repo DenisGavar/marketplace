@@ -45,7 +45,11 @@ const container = async () => {
 
   const productRepository = new ProductRepository(logger, db);
   const productService = new ProductService(logger, productRepository);
-  const productController = new ProductController(logger, productService);
+  const productController = new ProductController(
+    logger,
+    productService,
+    vendorService
+  );
 
   const orderDetailRepository = new OrderDetailRepository(logger, db);
 
@@ -57,7 +61,12 @@ const container = async () => {
     productRepository,
     transactor
   );
-  const orderController = new OrderController(logger, orderService);
+  const orderController = new OrderController(
+    logger,
+    orderService,
+    userService,
+    productService
+  );
 
   const container = {
     userController: userController,

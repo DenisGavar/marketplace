@@ -37,11 +37,12 @@ app.listen(port, () => {
 });
 
 // TODO:
-// add product_categories CRUD (maybe add to the product create/get/update)
-// add deploy
-// add tests (user, vendor, product, order)
-// add github workflow (deploy)
-// add frontend part
-// add data validation
 // rewrite documentation (technologies, contracts)
-// add not full update (you don't need to pass all parameters, but only the updated ones)
+// add frontend part (update documentation)
+// add product_categories CRUD (maybe add to the product create/get/update) (update documentation)
+// add vendor name for product get response
+
+// add not full update (you don't need to pass all parameters, but only the updated ones) (update documentation)
+// add tests (user, vendor, product, order) (update documentation)
+// change db (PostgreSQL or MySQL), because there are some problems to deploy app with SQLite
+// add deploy (update documentation)
