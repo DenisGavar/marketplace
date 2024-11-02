@@ -46,8 +46,8 @@ class OrderController {
             errMessage += `The 'productId' field in line ${line} is required.\n`;
           }
 
-          if (!quantity || typeof quantity != "number") {
-            errMessage += `The 'quantity' field in line ${line} is required and must be a number.\n`;
+          if (!quantity || typeof quantity != "number" || !Number.isInteger(quantity)) {
+            errMessage += `The 'quantity' field in line ${line} is required and must be an integer number.\n`;
           }
         }
       } else {
@@ -161,8 +161,8 @@ class OrderController {
             errMessage += `The 'productId' field in line ${line} is required.\n`;
           }
 
-          if (!quantity || typeof quantity != "number") {
-            errMessage += `The 'quantity' field in line ${line} is required and must be a number.\n`;
+          if (!quantity || typeof quantity != "number" || !Number.isInteger(quantity)) {
+            errMessage += `The 'quantity' field in line ${line} is required and must be an integer number.\n`;
           }
         }
       } else {

@@ -1,3 +1,11 @@
+## Technologies
+1. **Node.js** - Server-side JavaScript runtime for building scalable applications.
+2. **Express.js** - A web framework for creating RESTful APIs.
+3. **SQLite** - A lightweight SQL database used for data persistence.
+4. **Knex.js** - SQL query builder for handling migrations and database queries.
+5. **Jest** - Testing framework for unit and integration tests.
+6. **GitHub Actions** - For CI/CD workflows, automating testing and deployment.
+
 ## Getting Started
 
 To run and use the project:
@@ -61,106 +69,244 @@ To run and use the project:
 
 ## Contract
 
-### Categories
+<details>
+  <summary>User/Authentication</summary>
 
-#### Create
-*POST /api/v1/categories/*
+  #### Create/Sign up
+  *POST /api/v1/signup/*
 
-Request
-```json
-{
-    "name": string
-}
-```
+  Request
+  ```json
+  {
+      "name": string,
+      "email": string,
+      "password": string
+  }
+  ```
 
-#### Get all
-*GET /api/v1/categories/*
+  #### Sign in
+  *POST /api/v1/signin/*
 
-Request
-```json
-{}
-```
+  Request
+  ```json
+  {
+      "email": string,
+      "password": string
+  }
+  ```
+</details>
 
-#### Get by ID
-*GET /api/v1/categories/:id*
+<details>
+  <summary>Vendors</summary>
 
-Request
-```json
-{}
-```
+  #### Create
+  *POST /api/v1/vendors/*
 
-#### Update
-*PUT /api/v1/categories/:id*
+  Request
+  ```json
+  {
+      "name": string,
+      "email": string,
+      "rating": float
+  }
+  ```
 
-Request
-```json
-{
-    "name": string
-}
-```
+  #### Get all
+  *GET /api/v1/vendors/*
 
-#### Delete
-*DELETE /api/v1/categories/:id*
+  Request
+  ```json
+  {}
+  ```
 
-Request
-```json
-{}
-```
+  #### Get by ID
+  *GET /api/v1/vendors/:id*
 
-### Orders
+  Request
+  ```json
+  {}
+  ```
 
-#### Create
-*POST /api/v1/orders/*
+  #### Update
+  *PUT /api/v1/vendors/:id*
 
-Request
-```json
-{
-  "userId": int,
-  "products": [
-    {
-      "productId": int,
-      "quantity": int
-    }
-  ]
-}
-```
+  Request
+  ```json
+  {
+      "name": string,
+      "email": string,
+      "rating": float
+  }
+  ```
 
-#### Get all
-*GET /api/v1/orders/*
+  #### Delete
+  *DELETE /api/v1/vendors/:id*
 
-Request
-```json
-{}
-```
+  Request
+  ```json
+  {}
+  ```
 
-#### Get by ID
-*GET /api/v1/orders/:id*
+</details>
 
-Request
-```json
-{}
-```
+<details>
+  <summary>Products</summary>
 
-#### Update
-*PUT /api/v1/orders/:id*
+  #### Create
+  *POST /api/v1/products/*
 
-Request
-```json
-{
-  "products": [
-    {
-      "productId": int,
-      "quantity": int
-    }
-  ]
-}
-```
+  Request
+  ```json
+  {
+      "name": string,
+      "description": string,
+      "price": float,
+      "vendorId": int
+  }
+  ```
 
-#### Delete
-*DELETE /api/v1/orders/:id*
+  #### Get all
+  *GET /api/v1/products/*
 
-Request
-```json
-{}
-```
+  Request
+  ```json
+  {}
+  ```
+
+  #### Get by ID
+  *GET /api/v1/products/:id*
+
+  Request
+  ```json
+  {}
+  ```
+
+  #### Update
+  *PUT /api/v1/products/:id*
+
+  Request
+  ```json
+  {
+      "name": string,
+      "description": string,
+      "price": float,
+      "vendorId": int
+  }
+  ```
+
+  #### Delete
+  *DELETE /api/v1/products/:id*
+
+  Request
+  ```json
+  {}
+  ```
+</details>
+
+<details>
+  <summary>Categories</summary>
+
+  #### Create
+  *POST /api/v1/categories/*
+
+  Request
+  ```json
+  {
+      "name": string
+  }
+  ```
+
+  #### Get all
+  *GET /api/v1/categories/*
+
+  Request
+  ```json
+  {}
+  ```
+
+  #### Get by ID
+  *GET /api/v1/categories/:id*
+
+  Request
+  ```json
+  {}
+  ```
+
+  #### Update
+  *PUT /api/v1/categories/:id*
+
+  Request
+  ```json
+  {
+      "name": string
+  }
+  ```
+
+  #### Delete
+  *DELETE /api/v1/categories/:id*
+
+  Request
+  ```json
+  {}
+  ```
+</details>
+
+<details>
+  <summary>Orders</summary>
+
+  #### Create
+  *POST /api/v1/orders/*
+
+  Request
+  ```json
+  {
+    "userId": int,
+    "products": [
+      {
+        "productId": int,
+        "quantity": int
+      }
+    ]
+  }
+  ```
+
+  #### Get all
+  *GET /api/v1/orders/*
+
+  Request
+  ```json
+  {}
+  ```
+
+  #### Get by ID
+  *GET /api/v1/orders/:id*
+
+  Request
+  ```json
+  {}
+  ```
+
+  #### Update
+  *PUT /api/v1/orders/:id*
+
+  Request
+  ```json
+  {
+    "products": [
+      {
+        "productId": int,
+        "quantity": int
+      }
+    ]
+  }
+  ```
+
+  #### Delete
+  *DELETE /api/v1/orders/:id*
+
+  Request
+  ```json
+  {}
+  ```
+</details>
 
