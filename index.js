@@ -37,7 +37,6 @@ app.listen(port, () => {
 });
 
 // TODO:
-// rewrite documentation (technologies, contracts)
 // add frontend part (update documentation)
 // add product_categories CRUD (maybe add to the product create/get/update) (update documentation)
 // add vendor name for product get response
