@@ -31,6 +31,7 @@ To run and use the project:
     Fill in the required values in `.env`.
 
 4. **Run Migrations:**
+
     The knex library is used for migrations
 
     Run all migrations
@@ -49,6 +50,7 @@ To run and use the project:
     ```  
 
 5. **Run Seeds:**
+
     The knex library is used to fill the database with data
 
     ```bash
