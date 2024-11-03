@@ -58,7 +58,7 @@ To run and use the project:
 6. **Run tests:**
 
     The jest library is used for tests
-    ```bababashshch
+    ```bash
     npm test
     ```
 
@@ -66,6 +66,13 @@ To run and use the project:
     ```bash
     npm run coverage
     ```
+
+7. **Start app:**
+
+    ```bash
+    node index.js
+    ```
+
 
 ## Contract
 
