@@ -37,7 +37,9 @@ class ProductService {
     const message = { op: op };
     this.logger.info("", message);
 
-    const products = await this.productRepository.getAll();
+    let products = await this.productRepository.getAll();
+    products = groupByProducts(products);
+
     return products;
   }
 
@@ -46,7 +48,10 @@ class ProductService {
     const message = { op: op, id: id };
     this.logger.info("", message);
 
-    const product = await this.productRepository.getById(id);
+    let product = await this.productRepository.getById(id);
+    // TODO: What's the best way to do it to return only one product because we only have one product?
+    product = groupByProducts(product);
+
     return product;
   }
 
@@ -110,6 +115,33 @@ class ProductService {
     const product = await this.productRepository.delete(id);
     return product;
   }
+}
+
+function groupByProducts(rows) {
+  // Group the data by products
+  const productsMap = new Map();
+  rows.forEach((row) => {
+    if (!productsMap.has(row.productId)) {
+      productsMap.set(row.productId, {
+        productId: row.productId,
+        name: row.name,
+        description: row.description,
+        price: row.price,
+        vendorId: row.vendorId,
+        vendorName: row.vendorName,
+        categories: [],
+      });
+    }
+    const product = productsMap.get(row.productId);
+    product.categories.push({
+      categoryId: row.categoryId,
+      categoryName: row.categoryName,
+    });
+  });
+
+  // Convert the map to an array of products
+  const products = Array.from(productsMap.values());
+  return products;
 }
 
 module.exports = ProductService;

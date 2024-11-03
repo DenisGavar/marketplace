@@ -48,8 +48,7 @@ class ProductRepository {
         if (err) {
           return reject(err);
         }
-        const products = groupByProducts(rows);
-        resolve(products);
+        resolve(rows);
       });
     });
   }
@@ -81,9 +80,7 @@ class ProductRepository {
         if (err) {
           return reject(err);
         }
-        const products = groupByProducts(rows);
-        // TODO: What's the best way to do it to return only one product because we only have one product?
-        resolve(products[0]);
+        resolve(rows);
       });
     });
   }
@@ -131,33 +128,6 @@ class ProductRepository {
       });
     });
   }
-}
-
-function groupByProducts(rows) {
-  // Group the data by products
-  const productsMap = new Map();
-  rows.forEach((row) => {
-    if (!productsMap.has(row.productId)) {
-      productsMap.set(row.productId, {
-        productId: row.productId,
-        name: row.name,
-        description: row.description,
-        price: row.price,
-        vendorId: row.vendorId,
-        vendorName: row.vendorName,
-        categories: [],
-      });
-    }
-    const product = productsMap.get(row.productId);
-    product.categories.push({
-      categoryId: row.categoryId,
-      categoryName: row.categoryName,
-    });
-  });
-
-  // Convert the map to an array of products
-  const products = Array.from(productsMap.values());
-  return products;
 }
 
 module.exports = ProductRepository;
