@@ -35,36 +35,36 @@ To run and use the project:
 
     Run all migrations
     ```bash
-    npx knex migrate:latest
+    npm knex migrate:latest
     ```
 
     Rollback last migration:
      ```bash
-    npx knex migrate:rollback
+    npm knex migrate:rollback
     ```
 
     Rollback all migrations:
      ```bash
-    npx knex migrate:rollback --all
+    npm knex migrate:rollback --all
     ```  
 
 5. **Run Seeds:**
     The knex library is used to fill the database with data
 
     ```bash
-    npx knex seed:run
+    npm knex seed:run
     ```
 
 6. **Run tests:**
 
     The jest library is used for tests
     ```bababashshch
-    npx test
+    npm test
     ```
 
     To find out your test coverage
     ```bash
-    npx run coverage
+    npm run coverage
     ```
 
 ## Contract
@@ -161,7 +161,12 @@ To run and use the project:
       "name": string,
       "description": string,
       "price": float,
-      "vendorId": int
+      "vendorId": int,
+      "categories": [
+        {
+          "categoryId": int
+        }
+      ]
   }
   ```
 
@@ -190,7 +195,12 @@ To run and use the project:
       "name": string,
       "description": string,
       "price": float,
-      "vendorId": int
+      "vendorId": int,
+      "categories": [
+        {
+          "categoryId": int
+        }
+      ]
   }
   ```
 

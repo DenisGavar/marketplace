@@ -48,8 +48,7 @@ class OrderRepository {
         if (err) {
           return reject(err);
         }
-        const orders = groupByOrders(rows);
-        resolve(orders);
+        resolve(rows);
       });
     });
   }
@@ -80,9 +79,7 @@ class OrderRepository {
         if (err) {
           return reject(err);
         }
-        const orders = groupByOrders(rows);
-        // TODO: What's the best way to do it to return only one order because we only have one order?
-        resolve(orders[0]);
+        resolve(rows);
       });
     });
   }
@@ -120,32 +117,6 @@ class OrderRepository {
       });
     });
   }
-}
-
-function groupByOrders(rows) {
-  // Group the data by orders
-  const ordersMap = new Map();
-  rows.forEach((row) => {
-    if (!ordersMap.has(row.orderId)) {
-      ordersMap.set(row.orderId, {
-        orderId: row.orderId,
-        totalPrice: row.totalPrice,
-        userName: row.userName,
-        products: [],
-      });
-    }
-    const order = ordersMap.get(row.orderId);
-    order.products.push({
-      productId: row.productId,
-      productName: row.productName,
-      quantity: row.quantity,
-      price: row.price,
-    });
-  });
-
-  // Convert the map to an array of orders
-  const orders = Array.from(ordersMap.values());
-  return orders;
 }
 
 module.exports = OrderRepository;
