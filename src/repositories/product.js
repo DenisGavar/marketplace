@@ -28,12 +28,28 @@ class ProductRepository {
     this.logger.info("", message);
 
     return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM products`;
+      const query = `
+      SELECT      
+        products.id as productId,
+        products.name,
+        products.description,
+        products.price, 
+        vendors.id as vendorId,
+        vendors.name as vendorName,
+        categories.id as categoryId,
+        categories.name as categoryName
+      FROM products as products
+      LEFT JOIN product_categories as product_categories ON products.id = product_categories.productId
+        LEFT JOIN categories as categories ON product_categories.categoryId = categories.id
+      LEFT JOIN vendors as vendors ON products.vendorId = vendors.id
+    `;
+
       this.db.all(query, [], function (err, rows) {
         if (err) {
           return reject(err);
         }
-        resolve(rows);
+        const products = groupByProducts(rows);
+        resolve(products);
       });
     });
   }
@@ -44,12 +60,30 @@ class ProductRepository {
     this.logger.info("", message);
 
     return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM products WHERE id = ?`;
-      this.db.get(query, [id], function (err, row) {
+      const query = `
+      SELECT      
+        products.id as productId,
+        products.name,
+        products.description,
+        products.price, 
+        vendors.id as vendorId,
+        vendors.name as vendorName,
+        categories.id as categoryId,
+        categories.name as categoryName
+      FROM products as products
+      LEFT JOIN product_categories as product_categories ON products.id = product_categories.productId
+        LEFT JOIN categories as categories ON product_categories.categoryId = categories.id
+      LEFT JOIN vendors as vendors ON products.vendorId = vendors.id
+      WHERE products.id = ?
+    `;
+
+      this.db.all(query, [id], function (err, rows) {
         if (err) {
           return reject(err);
         }
-        resolve(row);
+        const products = groupByProducts(rows);
+        // TODO: What's the best way to do it to return only one product because we only have one product?
+        resolve(products[0]);
       });
     });
   }
@@ -97,6 +131,33 @@ class ProductRepository {
       });
     });
   }
+}
+
+function groupByProducts(rows) {
+  // Group the data by products
+  const productsMap = new Map();
+  rows.forEach((row) => {
+    if (!productsMap.has(row.productId)) {
+      productsMap.set(row.productId, {
+        productId: row.productId,
+        name: row.name,
+        description: row.description,
+        price: row.price,
+        vendorId: row.vendorId,
+        vendorName: row.vendorName,
+        categories: [],
+      });
+    }
+    const product = productsMap.get(row.productId);
+    product.categories.push({
+      categoryId: row.categoryId,
+      categoryName: row.categoryName,
+    });
+  });
+
+  // Convert the map to an array of products
+  const products = Array.from(productsMap.values());
+  return products;
 }
 
 module.exports = ProductRepository;

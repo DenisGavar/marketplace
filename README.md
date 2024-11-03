@@ -161,7 +161,12 @@ To run and use the project:
       "name": string,
       "description": string,
       "price": float,
-      "vendorId": int
+      "vendorId": int,
+      "categories": [
+        {
+          "categoryId": int
+        }
+      ]
   }
   ```
 
@@ -190,7 +195,12 @@ To run and use the project:
       "name": string,
       "description": string,
       "price": float,
-      "vendorId": int
+      "vendorId": int,
+      "categories": [
+        {
+          "categoryId": int
+        }
+      ]
   }
   ```
 

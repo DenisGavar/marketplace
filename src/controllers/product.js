@@ -1,7 +1,8 @@
 class ProductController {
-  constructor(logger, productService, vendorService) {
+  constructor(logger, productService, vendorService, categoryService) {
     this.productService = productService;
     this.vendorService = vendorService;
+    this.categoryService = categoryService;
     this.logger = logger;
 
     this.create = this.create.bind(this);
@@ -14,10 +15,16 @@ class ProductController {
   // Create product
   async create(req, res) {
     try {
-      const { name, description, price, vendorId } = req.body;
+      const { name, description, price, vendorId, categories } = req.body;
 
       const op = "controllers.product.create";
-      const message = { op: op, name: name, price: price, vendorId: vendorId };
+      const message = {
+        op: op,
+        name: name,
+        price: price,
+        vendorId: vendorId,
+        categories: categories,
+      };
       this.logger.info("", message);
 
       let errMessage = "";
@@ -42,6 +49,25 @@ class ProductController {
         errMessage += "The 'vendorId' field is required.\n";
       }
 
+      if (categories && categories.length != 0) {
+        let line = 0;
+        for (const category of categories) {
+          const { categoryId } = category;
+          line++;
+
+          if (categoryId) {
+            const category = await this.categoryService.getById(categoryId);
+            if (!category) {
+              errMessage += `Category with id ${categoryId} in line ${line} not found.\n`;
+            }
+          } else {
+            errMessage += `The 'categoryId' field in line ${line} is required.\n`;
+          }
+        }
+      } else {
+        errMessage += "The 'categories' field is required.\n";
+      }
+
       if (errMessage != "") {
         return res.status(400).json({
           status: "fail",
@@ -54,6 +80,7 @@ class ProductController {
         description: description,
         price: price,
         vendorId: vendorId,
+        categories: categories,
       };
       const product = await this.productService.create(data);
       res.status(201).json({
@@ -122,7 +149,7 @@ class ProductController {
   // Update product
   async update(req, res) {
     try {
-      const { name, description, price, vendorId } = req.body;
+      const { name, description, price, vendorId, categories } = req.body;
       const id = req.params.id;
 
       const op = "controllers.product.update";
@@ -132,6 +159,7 @@ class ProductController {
         name: name,
         price: price,
         vendorId: vendorId,
+        categories: categories,
       };
       this.logger.info("", message);
 
@@ -157,6 +185,25 @@ class ProductController {
         errMessage += "The 'vendorId' field is required.\n";
       }
 
+      if (categories && categories.length != 0) {
+        let line = 0;
+        for (const category of categories) {
+          const { categoryId } = category;
+          line++;
+
+          if (categoryId) {
+            const category = await this.categoryService.getById(categoryId);
+            if (!category) {
+              errMessage += `Category with id ${categoryId} in line ${line} not found.\n`;
+            }
+          } else {
+            errMessage += `The 'categoryId' field in line ${line} is required.\n`;
+          }
+        }
+      } else {
+        errMessage += "The 'categories' field is required.\n";
+      }
+
       if (errMessage != "") {
         return res.status(400).json({
           status: "fail",
@@ -169,6 +216,7 @@ class ProductController {
         description: description,
         price: price,
         vendorId: vendorId,
+        categories: categories,
       };
       const product = await this.productService.update(id, data);
       if (!product) {

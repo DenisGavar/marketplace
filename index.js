@@ -38,8 +38,7 @@ app.listen(port, () => {
 
 // TODO:
 // add frontend part (update documentation)
-// add product_categories CRUD (maybe add to the product create/get/update) (update documentation)
-// add vendor name for product get response
+// move data processing from order/product repository to service (getAll, getById)
 
 // add not full update (you don't need to pass all parameters, but only the updated ones) (update documentation)
 // add tests (user, vendor, product, order) (update documentation)
