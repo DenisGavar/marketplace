@@ -13,8 +13,8 @@ To run and use the project:
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/mrwirzz/Marketplace-projectFile.git
-    cd Marketplace-projectFile
+    git clone https://github.com/DenisGavar/marketplace.git
+    cd marketplace
     ```
 2. **Install Dependencies:**
 
